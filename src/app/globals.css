@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #e2e8f0;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Marching dashes on focused edges, so the direction of flow reads at a glance. */
+.sf-edge-flow {
+  animation: sf-dash 1.2s linear infinite;
+}
+@keyframes sf-dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf-edge-flow {
+    animation: none;
+  }
+}
+
+.react-flow {
+  --xy-background-color: transparent;
+}
