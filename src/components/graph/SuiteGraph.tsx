@@ -15,9 +15,9 @@ import "@xyflow/react/dist/style.css";
 import { useEffect, useMemo, useRef } from "react";
 import { groupById, groups } from "@/data/groups";
 import { productById } from "@/data/products";
-import { edgeKindById } from "@/data/relationships";
+import { edgeKindById, edgeKinds } from "@/data/relationships";
 import type { GroupId } from "@/data/types";
-import { findProject, useUI } from "@/store/ui";
+import { findProject, focusHiddenKinds, useUI } from "@/store/ui";
 import { CloudNode, type CloudNodeType } from "./CloudNode";
 import { FloatingEdge, type EdgeState, type FloatingEdgeType } from "./FloatingEdge";
 import { matchesTags, neighborhood, projectFocus, seedsFor, visibleRelationships, type Focus } from "./focus";
@@ -33,13 +33,23 @@ export function SuiteGraph() {
   const project = findProject(s.projectId, s.userProjects);
 
   const layout = useMemo(() => computeLayout(s.collapsed), [s.collapsed]);
-  const rels = useMemo(() => visibleRelationships(s.hiddenKinds, s.showInferred), [s.hiddenKinds, s.showInferred]);
+  const allOff = s.hiddenKinds.length === edgeKinds.length;
+  const focusRels = useMemo(
+    () => visibleRelationships(allOff ? focusHiddenKinds : s.hiddenKinds, s.showInferred),
+    [allOff, s.hiddenKinds, s.showInferred],
+  );
 
   const focus: Focus | null = useMemo(() => {
-    if (project) return projectFocus(project, rels, s.stepIndex);
-    if (s.selectedId) return neighborhood(seedsFor(s.selectedId), rels, s.hops);
+    if (project) return projectFocus(project, focusRels, s.stepIndex);
+    if (s.selectedId) return neighborhood(seedsFor(s.selectedId), focusRels, s.hops);
     return null;
-  }, [project, rels, s.stepIndex, s.selectedId, s.hops]);
+  }, [project, focusRels, s.stepIndex, s.selectedId, s.hops]);
+
+  // With every kind off, only the focused paths are drawn.
+  const rels = useMemo(
+    () => (allOff ? focusRels.filter((r) => focus?.edges.has(r.id)) : focusRels),
+    [allOff, focusRels, focus],
+  );
 
   const { nodes, edges } = useMemo(() => {
     const tagMatch = (id: string) => matchesTags(id, s.activeTags, s.tagMode);

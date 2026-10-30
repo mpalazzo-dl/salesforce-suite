@@ -69,7 +69,7 @@ function ProductDetail({ p }: { p: Product }) {
         <p className="mt-2 text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">{p.summary}</p>
       </div>
 
-      <div className={`rounded-lg border p-3 ${p.id === "contentful" ? "border-yellow-400 bg-yellow-50 dark:bg-yellow-950/30" : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50"}`}>
+      <div className={`rounded-lg border p-3 ${p.contentfulFit.level === "self" ? "border-yellow-400 bg-yellow-50 dark:bg-yellow-950/30" : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50"}`}>
         <div className="mb-1.5 flex items-center justify-between">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Contentful fit</span>
           <FitBadge level={p.contentfulFit.level} />

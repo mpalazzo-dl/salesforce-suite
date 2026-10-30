@@ -27,18 +27,18 @@ export const seedProjects: Project[] = [
     name: "SFCC headless storefront",
     summary:
       "A B2C Commerce (Demandware) brand going headless with Storefront Next wants editorial content and merchandising outside Page Designer.",
-    products: ["b2c-commerce", "contentful", "cimulate", "mc-personalization", "order-management", "data-360"],
+    products: ["b2c-commerce", "contentful", "optimization", "cimulate", "mc-personalization", "order-management", "data-360"],
     steps: [
       { node: "b2c-commerce", title: "SFCC is off core", body: "It has its own stack (realms/PODs) with OCAPI/SCAPI. There is no shared data model with core or Contentful." },
       { edge: "b2c-commerce__contentful", title: "CDA at render time", body: "Storefront Next (or Page Designer components) calls CDA/GraphQL at render time. Products come from SCAPI and content from Contentful." },
       { edge: "cimulate__b2c-commerce", title: "Search is catalog-only", body: "Cimulate indexes the product catalog. Contentful content still needs its own search (e.g. Algolia)." },
-      { edge: "mc-personalization__b2c-commerce", title: "Personalization", body: "MC Personalization may already be in the storefront. It can decide on Contentful variants, which makes it the Ninetailed competitor." },
+      { edge: "mc-personalization__b2c-commerce", title: "Personalization", body: "MC Personalization may already be in the storefront. It can decide on Contentful variants, which makes it the Contentful Optimization competitor." },
       { edge: "b2c-commerce__order-management", title: "Orders to core", body: "Orders flow to OMS on core. Low content relevance." },
       { edge: "b2c-commerce__data-360", title: "Profiles in Data 360", body: "Shopper data unifies in Data 360, where content metadata can join it for segmentation." },
     ],
     talkTrack: [
       "Page Designer content assets are the overlap; Contentful is the content layer across every channel, not just the storefront.",
-      "Expect MC Personalization vs Ninetailed; position on the content-native authoring experience.",
+      "Expect MC Personalization vs Contentful Optimization; position on the content-native authoring experience.",
     ],
   },
   {

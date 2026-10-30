@@ -218,7 +218,7 @@ export function CatalogView({ initialQuery = "" }: { initialQuery?: string }) {
                     onClick={() => toggleOpen(p.id)}
                     className={cx(
                       "cursor-pointer border-b border-slate-100 align-top hover:bg-slate-50 dark:border-slate-800/70 dark:hover:bg-slate-900",
-                      p.id === "contentful" && "bg-yellow-50/60 dark:bg-yellow-950/20",
+                      p.contentfulFit.level === "self" && "bg-yellow-50/60 dark:bg-yellow-950/20",
                     )}
                   >
                     <td className="py-2.5 pl-3 text-slate-400">{open.has(p.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</td>
@@ -324,7 +324,7 @@ function ProductExpansion({ p, q }: { p: Product; q: string }) {
     <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr]">
       <OverviewMain id={p.id} q={q} />
       <div className="space-y-4">
-        <div className={cx("rounded-lg border p-3", p.id === "contentful" ? "border-yellow-400 bg-yellow-50 dark:bg-yellow-950/30" : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950")}>
+        <div className={cx("rounded-lg border p-3", p.contentfulFit.level === "self" ? "border-yellow-400 bg-yellow-50 dark:bg-yellow-950/30" : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950")}>
           <div className="mb-1 flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Contentful fit</span>
             <FitBadge level={p.contentfulFit.level} />
@@ -364,7 +364,7 @@ function ProductExpansion({ p, q }: { p: Product; q: string }) {
 function ProductCard({ p, q }: { p: Product; q: string }) {
   const [full, setFull] = useState(false);
   return (
-    <div className={cx("flex flex-col rounded-lg border bg-white p-4 dark:bg-slate-950", p.id === "contentful" ? "border-yellow-400" : "border-slate-200 dark:border-slate-800")}>
+    <div className={cx("flex flex-col rounded-lg border bg-white p-4 dark:bg-slate-950", p.contentfulFit.level === "self" ? "border-yellow-400" : "border-slate-200 dark:border-slate-800")}>
       <div className="flex items-start justify-between gap-2">
         <div>
           <GroupBadge id={p.group} />

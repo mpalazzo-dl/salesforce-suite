@@ -158,9 +158,14 @@ export const productParts: Record<string, ProductPart[]> = {
     { name: "Content Delivery API / GraphQL", what: "Read APIs and CDN for published content; the Preview API serves drafts.", aka: ["CDA", "CPA"] },
     { name: "Content Management API", what: "Write API used by integrations and agents.", aka: ["CMA"] },
     { name: "Launch / Workflows", what: "Releases and approval workflows." },
-    { name: "Personalization", what: "Experimentation and personalization, formerly Ninetailed.", aka: ["Ninetailed"] },
     { name: "App Framework / Marketplace", what: "Extensions inside the editor, including Salesforce-related apps." },
     { name: "MCP server", what: "Lets AI agents read and write content." },
+  ],
+  optimization: [
+    { name: "Audiences", what: "Visitor segments that decide who sees which variant." },
+    { name: "Experiences", what: "Personalized variants of Contentful entries." },
+    { name: "Experiments", what: "A/B tests over content variants." },
+    { name: "SDKs", what: "Pick and render the chosen variant in the frontend." },
   ],
   tableau: [
     { name: "Tableau Cloud / Server / Desktop", what: "Hosted, self-hosted and authoring editions." },

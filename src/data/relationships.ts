@@ -1,17 +1,17 @@
 import type { EdgeKind, Relationship } from "./types";
 
-export const edgeKinds: { id: EdgeKind; label: string; color: string; defaultOn: boolean }[] = [
-  { id: "consumes-content", label: "Consumes Contentful content", color: "#d4a700", defaultOn: true },
-  { id: "agent-action", label: "Agent action / MCP", color: "#7f56d9", defaultOn: true },
-  { id: "ingest", label: "Ingests into Data 360", color: "#0176d3", defaultOn: true },
-  { id: "grounding", label: "Grounds / decides on", color: "#9b6dff", defaultOn: true },
-  { id: "data-sync", label: "Data sync / connector", color: "#0b827c", defaultOn: true },
-  { id: "pipe", label: "Integration pipe", color: "#14b8a6", defaultOn: true },
-  { id: "surfaces-in", label: "Surfaces in", color: "#e3066a", defaultOn: true },
-  { id: "overlap", label: "Overlaps / competes", color: "#dc2626", defaultOn: true },
-  { id: "secures", label: "Secures", color: "#64748b", defaultOn: true },
-  { id: "related", label: "Related / successor", color: "#94a3b8", defaultOn: true },
-  { id: "runs-on", label: "Runs on core", color: "#cbd5e1", defaultOn: false },
+export const edgeKinds: { id: EdgeKind; label: string; color: string; inFocus: boolean }[] = [
+  { id: "consumes-content", label: "Consumes Contentful content", color: "#d4a700", inFocus: true },
+  { id: "agent-action", label: "Agent action / MCP", color: "#7f56d9", inFocus: true },
+  { id: "ingest", label: "Ingests into Data 360", color: "#0176d3", inFocus: true },
+  { id: "grounding", label: "Grounds / decides on", color: "#9b6dff", inFocus: true },
+  { id: "data-sync", label: "Data sync / connector", color: "#0b827c", inFocus: true },
+  { id: "pipe", label: "Integration pipe", color: "#14b8a6", inFocus: true },
+  { id: "surfaces-in", label: "Surfaces in", color: "#e3066a", inFocus: true },
+  { id: "overlap", label: "Overlaps / competes", color: "#dc2626", inFocus: true },
+  { id: "secures", label: "Secures", color: "#64748b", inFocus: true },
+  { id: "related", label: "Related / successor", color: "#94a3b8", inFocus: true },
+  { id: "runs-on", label: "Runs on core", color: "#cbd5e1", inFocus: false },
 ];
 
 export const edgeKindById = Object.fromEntries(edgeKinds.map((k) => [k.id, k])) as Record<
@@ -320,9 +320,31 @@ const raw: R[] = [
   {
     from: "mc-personalization",
     to: "contentful",
+    kind: "consumes-content",
+    label: "decides variants",
+    description: "Can decide which Contentful variant to render.",
+  },
+  {
+    from: "mc-personalization",
+    to: "optimization",
     kind: "overlap",
-    label: "decides variants · vs Ninetailed",
-    description: "Can decide which Contentful variant to render. It is a direct competitor to Ninetailed / EXO.",
+    label: "competes",
+    description: "A direct competitor to Contentful Optimization / EXO.",
+  },
+  {
+    from: "optimization",
+    to: "contentful",
+    kind: "consumes-content",
+    label: "variants",
+    description: "Variants are authored as Contentful entries; Optimization decides which one each visitor sees.",
+  },
+  {
+    from: "optimization",
+    to: "data-360",
+    kind: "grounding",
+    label: "audiences",
+    description: "Data 360 segments are a natural audience source for Optimization. No first-party link is confirmed.",
+    confidence: "inferred",
   },
   {
     from: "mc-personalization",

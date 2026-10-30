@@ -99,6 +99,27 @@ export function Segmented<T extends string | number>({
   );
 }
 
+/** The visual track of a switch; the caller's control carries the role and state. */
+export function SwitchTrack({ on }: { on: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={cx(
+        "relative inline-block h-4 w-7 shrink-0 rounded-full transition-colors",
+        on ? "bg-slate-900 dark:bg-white" : "bg-slate-300 dark:bg-slate-600",
+      )}
+    >
+      <span
+        className={cx(
+          "absolute left-0.5 top-0.5 h-3 w-3 rounded-full bg-white transition-transform dark:bg-slate-900",
+          on && "translate-x-3",
+          !on && "dark:bg-slate-300",
+        )}
+      />
+    </span>
+  );
+}
+
 export function Highlight({ text, query }: { text: string; query: string }) {
   const terms = query.toLowerCase().split(/\s+/).filter((t) => t.length > 1);
   if (!terms.length) return <>{text}</>;

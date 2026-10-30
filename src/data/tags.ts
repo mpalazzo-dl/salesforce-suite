@@ -11,7 +11,7 @@ export const tags: Tag[] = [
   { id: "acquired", label: "Acquired", description: "Came from an acquisition, so usually its own stack." },
   { id: "legacy", label: "Legacy", description: "Being replaced or sunset." },
   { id: "consumption", label: "Consumption-priced", description: "Metered credits per activity." },
-  { id: "cf-overlap", label: "Contentful overlap", description: "Has a native content store or feature that overlaps Contentful or Ninetailed." },
+  { id: "cf-overlap", label: "Contentful overlap", description: "Has a native content store or feature that overlaps Contentful or Contentful Optimization." },
   { id: "cf-touchpoint", label: "Contentful touchpoint", description: "Contentful fit is medium or better today." },
   { id: "roadmap", label: "Roadmap claims", description: "Some of the Contentful story depends on unshipped features." },
 ];

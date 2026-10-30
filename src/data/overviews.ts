@@ -250,7 +250,7 @@ export const overviews: Record<string, Overview> = {
     keyConcepts: ["Sitemap", "Content zone", "Web campaign", "Recipe", "Catalog", "Einstein decisions"],
     discovery: [
       "Who owns experimentation, and where do the variants' content live?",
-      "Is Contentful Personalization (Ninetailed) being evaluated alongside?",
+      "Is Contentful Optimization (formerly Ninetailed) being evaluated alongside?",
     ],
   },
   "b2c-commerce": {
@@ -341,18 +341,33 @@ export const overviews: Record<string, Overview> = {
     discovery: ["Where is their headless frontend hosted: Heroku, Vercel, Netlify or something in-house?"],
   },
   contentful: {
-    what: "A composable content platform. Teams model structured content as content types, author and localize entries and assets in the web app, assemble pages visually with Studio, and deliver to any channel through the Content Delivery API, GraphQL and the image CDN. Workflows, releases (Launch), Personalization (from Ninetailed), AI Actions, the App Framework and an MCP server sit around that core. After the acquisition it becomes the content layer across Salesforce, while staying the system of record on its own platform.",
+    what: "A composable content platform. Teams model structured content as content types, author and localize entries and assets in the web app, assemble pages visually with Studio, and deliver to any channel through the Content Delivery API, GraphQL and the image CDN. Workflows, releases (Launch), AI Actions, the App Framework and an MCP server sit around that core. Contentful Optimization sits beside it for personalization and experimentation. After the acquisition it becomes the content layer across Salesforce, while staying the system of record on its own platform.",
     users: ["Content editors and marketers", "Developers", "Content architects", "Localization teams"],
     howUsed: [
       "Model content once as structured types and reuse it everywhere",
       "Author, localize, preview and run approval workflows",
-      "Schedule releases and personalize experiences",
+      "Schedule releases",
       "Deliver to websites, apps, Salesforce surfaces and agents through APIs",
     ],
-    keyConcepts: ["Space", "Environment", "Content type", "Entry / asset", "Locale", "CDA / CPA / CMA", "GraphQL", "Studio", "Launch", "Personalization"],
+    keyConcepts: ["Space", "Environment", "Content type", "Entry / asset", "Locale", "CDA / CPA / CMA", "GraphQL", "Studio", "Launch"],
     discovery: [
       "Which Salesforce surface consumes content first: Experience Cloud, Commerce, Marketing or Agentforce?",
       "Is the same content duplicated across Salesforce CMS, Content Builder, Page Designer and Knowledge today?",
+    ],
+  },
+  optimization: {
+    what: "Personalization and experimentation native to Contentful, formerly Contentful Personalization and Ninetailed. Teams define audiences, author variants as Contentful entries, and run personalized experiences and A/B tests on them. SDKs in the frontend decide which variant each visitor sees, so it sits alongside Contentful in the content layer rather than on core.",
+    users: ["Digital marketers", "Personalization and CRO teams", "Content editors", "Frontend developers"],
+    howUsed: [
+      "Define audiences from visitor behavior and connected data",
+      "Author variants as Contentful entries",
+      "Run personalized experiences and experiments",
+      "Render the chosen variant through the SDK in the frontend",
+    ],
+    keyConcepts: ["Audience", "Experience", "Variant", "Experiment", "SDK"],
+    discovery: [
+      "Who owns experimentation, and is MC Personalization already deployed?",
+      "Which audience data needs to drive variants, and does it live in Data 360?",
     ],
   },
   tableau: {

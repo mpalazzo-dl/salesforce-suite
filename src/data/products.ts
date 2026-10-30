@@ -351,7 +351,7 @@ export const products: Product[] = [
     contentfulFit: {
       level: "direct",
       pattern: "Can decide which Contentful variant to render.",
-      overlap: "Direct competitor to Ninetailed / EXO",
+      overlap: "Direct competitor to Contentful Optimization / EXO",
     },
     tags: ["headless", "customer-facing", "cf-overlap"],
     summary: "Real-time web/app personalization and recommendations via SDK.",
@@ -539,6 +539,32 @@ export const products: Product[] = [
     tags: ["headless", "roadmap"],
     summary:
       "Composable content platform. Close expected fiscal Q3 FY27 (Aug-Oct 2026). AEs cite a first-party Data 360 connector 3-6 months after close.",
+  },
+
+  {
+    id: "optimization",
+    name: "Contentful Optimization",
+    shortName: "Optimization",
+    formerNames: ["Contentful Personalization", "Ninetailed"],
+    group: "contentful",
+    category: "Personalization & experimentation",
+    origin: "Ninetailed, via Contentful",
+    acquiredYear: 2026,
+    onCore: "no",
+    hyperforce: "no",
+    hyperforceNote: "Own footprint, with Contentful",
+    frontend: "Inside the Contentful web app; SDKs in the delivering frontend",
+    dataStore: "Own platform",
+    pricing: "add-on",
+    pricingNote: "Sold with Contentful; confirm current packaging",
+    contentfulFit: {
+      level: "self",
+      pattern: "The optimization half of the content layer. Variants are authored in Contentful, and Optimization decides which one each visitor sees.",
+      overlap: "Marketing Cloud Personalization",
+    },
+    tags: ["headless"],
+    summary:
+      "Personalization and experimentation native to Contentful, formerly Contentful Personalization and Ninetailed. It arrives with the Contentful acquisition.",
   },
 
   // ── Analytics ────────────────────────────────────────────────────

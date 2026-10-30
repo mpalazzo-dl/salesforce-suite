@@ -8,7 +8,7 @@ export const groups: Group[] = [
   { id: "ai", name: "Agentforce 360", blurb: "The AI platform: agents authored on core, grounded on Data 360.", color: "#7f56d9", cols: 1 },
   { id: "platform", name: "Platform & Data", blurb: "Core runtime, the Data 360 lakehouse and the Shield controls.", color: "#032d60", cols: 3 },
   { id: "integration", name: "Integration & Data Mgmt", blurb: "Pipes, governance and app hosting.", color: "#0b827c", cols: 2 },
-  { id: "contentful", name: "Content Layer", blurb: "Contentful: system of record for content, on its own footprint.", color: "#ffda00", cols: 1 },
+  { id: "contentful", name: "Content Layer", blurb: "Contentful, the system of record for content, and Optimization, on their own footprint.", color: "#ffda00", cols: 1 },
   { id: "analytics", name: "Analytics", blurb: "BI over core and Data 360.", color: "#5867e8", cols: 2 },
   { id: "collab", name: "Collaboration & Other", blurb: "Slack as the agent front door; backup and docs.", color: "#4a154b", cols: 3 },
 ];

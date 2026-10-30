@@ -8,12 +8,14 @@ import { tags } from "@/data/tags";
 import type { Project } from "@/data/types";
 import { cx } from "@/lib/format";
 import { useAllProjects, useUI } from "@/store/ui";
-import { SectionTitle, Segmented, TagChip } from "../ui";
+import { SectionTitle, Segmented, SwitchTrack, TagChip } from "../ui";
 
 export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
   const s = useUI();
   const projects = useAllProjects();
   const fileRef = useRef<HTMLInputElement>(null);
+  const kindsOn = edgeKinds.filter((k) => !s.hiddenKinds.includes(k.id)).length;
+  const allKindsOn = kindsOn === edgeKinds.length;
 
   const exportProjects = () => {
     const blob = new Blob([JSON.stringify(s.userProjects, null, 2)], { type: "application/json" });
@@ -106,20 +108,48 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
       </section>
 
       <section>
-        <SectionTitle>Connections</SectionTitle>
-        <ul className="space-y-1">
+        <SectionTitle
+          right={
+            <button
+              type="button"
+              role="switch"
+              aria-checked={allKindsOn}
+              aria-label="All connections"
+              onClick={() => s.setHiddenKinds(allKindsOn ? edgeKinds.map((k) => k.id) : [])}
+              className="flex items-center gap-1.5 rounded text-xs font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+            >
+              All
+              <SwitchTrack on={allKindsOn} />
+            </button>
+          }
+        >
+          Connections <span className="font-normal normal-case tracking-normal">({kindsOn} of {edgeKinds.length} on)</span>
+        </SectionTitle>
+        <ul className="-mx-1.5 space-y-0.5">
           {edgeKinds.map((k) => {
             const on = !s.hiddenKinds.includes(k.id);
             return (
               <li key={k.id}>
-                <button onClick={() => s.toggleKind(k.id)} className={cx("flex w-full items-center gap-2 text-left text-xs", !on && "opacity-40")}>
-                  <span className="h-0.5 w-5 shrink-0 rounded" style={{ background: k.color, height: 3 }} />
-                  <span className="text-slate-700 dark:text-slate-300">{k.label}</span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={on}
+                  onClick={() => s.toggleKind(k.id)}
+                  className="flex w-full items-center gap-2 rounded-md px-1.5 py-1 text-left text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <span className={cx("w-5 shrink-0 rounded", !on && "opacity-40")} style={{ background: k.color, height: 3 }} />
+                  <span className={cx("flex-1", on ? "font-medium text-slate-800 dark:text-slate-100" : "text-slate-500 dark:text-slate-400")}>
+                    {k.label}
+                  </span>
+                  <SwitchTrack on={on} />
                 </button>
               </li>
             );
           })}
         </ul>
+        <p className="mt-2 text-[11px] leading-snug text-slate-500">
+          Switch on a connection type to draw it on the map. With all off, clicking a product still shows its connections.
+        </p>
         <label className="mt-2 flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
           <input type="checkbox" checked={s.showInferred} onChange={(e) => s.setShowInferred(e.target.checked)} />
           Show inferred links <span className="text-slate-400">(dashed: not in the index)</span>

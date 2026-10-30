@@ -18,7 +18,7 @@ const handleStyle = { opacity: 0, top: "50%", left: "50%", width: 1, height: 1, 
 function ProductNodeImpl({ data }: NodeProps<ProductNodeType>) {
   const { product: p, state } = data;
   const far = useStore(zoomedOut);
-  const isCf = p.id === "contentful";
+  const isCf = p.contentfulFit.level === "self";
   const color = groupById[p.group].color;
 
   return (
@@ -53,7 +53,11 @@ function ProductNodeImpl({ data }: NodeProps<ProductNodeType>) {
                 {fitMeta[p.contentfulFit.level].label}
               </span>
             )}
-            {isCf && <span className="rounded bg-yellow-300 px-1.5 py-px text-[10px] font-semibold text-yellow-950">System of record</span>}
+            {isCf && (
+              <span className="rounded bg-yellow-300 px-1.5 py-px text-[10px] font-semibold text-yellow-950">
+                {p.id === "contentful" ? "System of record" : "Content layer"}
+              </span>
+            )}
           </div>
         </div>
       )}

@@ -29,6 +29,7 @@ export interface UIState {
   setTagMode: (m: TagMode) => void;
   setHideNonMatching: (v: boolean) => void;
   toggleKind: (k: EdgeKind) => void;
+  setHiddenKinds: (k: EdgeKind[]) => void;
   setShowInferred: (v: boolean) => void;
   toggleCollapsed: (g: GroupId) => void;
   setCollapsed: (g: GroupId[]) => void;
@@ -39,7 +40,9 @@ export interface UIState {
   importUserProjects: (ps: Project[]) => void;
 }
 
-export const defaultHiddenKinds = edgeKinds.filter((k) => !k.defaultOn).map((k) => k.id);
+export const defaultHiddenKinds = edgeKinds.map((k) => k.id);
+/** Kinds a focus or project traces when every connection is switched off. */
+export const focusHiddenKinds = edgeKinds.filter((k) => !k.inFocus).map((k) => k.id);
 
 export const useUI = create<UIState>()(
   persist(
@@ -65,6 +68,7 @@ export const useUI = create<UIState>()(
       setHideNonMatching: (hideNonMatching) => set({ hideNonMatching }),
       toggleKind: (k) =>
         set((s) => ({ hiddenKinds: s.hiddenKinds.includes(k) ? s.hiddenKinds.filter((x) => x !== k) : [...s.hiddenKinds, k] })),
+      setHiddenKinds: (hiddenKinds) => set({ hiddenKinds }),
       setShowInferred: (showInferred) => set({ showInferred }),
       toggleCollapsed: (g) =>
         set((s) => ({ collapsed: s.collapsed.includes(g) ? s.collapsed.filter((x) => x !== g) : [...s.collapsed, g] })),
