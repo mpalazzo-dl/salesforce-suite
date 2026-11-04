@@ -42,10 +42,10 @@ export const overviews: Record<string, Overview> = {
       "Build segments and activate them to Marketing Cloud, ad platforms or other targets; trigger Flows from data changes",
       "Create search indexes and retrievers over unstructured content so Agentforce can do RAG; federate zero-copy with Snowflake, Databricks or BigQuery",
     ],
-    keyConcepts: ["Data space", "Data stream", "DLO / DMO", "Identity resolution", "Unified individual", "Calculated insight", "Segment", "Activation", "Search index / retriever", "Credits"],
+    keyConcepts: ["Data space", "Data stream", "DLO / DMO", "Identity resolution", "Unified individual", "Calculated insight", "Segment", "Activation", "Search index / retriever", "Flex Credits"],
     discovery: [
       "Which sources already stream into Data 360, and who owns the data model?",
-      "Is there a credit budget for ingesting content and running grounding queries?",
+      "Is there a Flex Credit budget for processing content and running grounding queries? Ingestion itself is free; querying, prep, unification and unstructured processing burn credits.",
       "Do they plan to ground agents on web or help content? Where does that content live today?",
     ],
   },

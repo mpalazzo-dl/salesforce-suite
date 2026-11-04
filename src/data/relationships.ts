@@ -199,7 +199,7 @@ const raw: R[] = [
     to: "data-360",
     kind: "grounding",
     label: "segments",
-    description: "Segments and audiences come from Data 360; Data 360 credits are bundled in the edition.",
+    description: "Segments and audiences come from Data 360; Data 360 Flex Credits are bundled in the edition.",
   },
   {
     from: "mc-growth",

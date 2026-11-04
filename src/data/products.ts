@@ -40,7 +40,7 @@ export const products: Product[] = [
     frontend: "Admin UI only",
     dataStore: "Iceberg lake + real-time profile store + vector index",
     pricing: "consumption",
-    pricingNote: "Consumption (credits)",
+    pricingNote: "Consumption (Flex Credits), or profile-based with Flex Credits bundled per profile",
     contentfulFit: {
       level: "high",
       pattern:
@@ -304,7 +304,7 @@ export const products: Product[] = [
     frontend: "Admin UI; email/SMS/forms builders",
     dataStore: "Core + Data 360",
     pricing: "bundled",
-    pricingNote: "Org/edition fee bundling Data 360 credits",
+    pricingNote: "Org/edition fee bundling Data 360 Flex Credits",
     contentfulFit: {
       level: "medium",
       pattern: "Content blocks and landing pages can pull Contentful; segments come from Data 360.",
