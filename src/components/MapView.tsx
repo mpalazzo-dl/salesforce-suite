@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactFlowProvider } from "@xyflow/react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, SlidersHorizontal, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { relationships } from "@/data/relationships";
@@ -20,7 +20,7 @@ const SuiteGraph = dynamic(() => import("./graph/SuiteGraph").then((m) => m.Suit
 
 export function MapView() {
   useUrlSync();
-  const { selectedId, projectId, hops, userProjects } = useUI();
+  const { selectedId, projectId, hops, userProjects, sidebarCollapsed, setSidebarCollapsed } = useUI();
   const [editor, setEditor] = useState<Partial<Project> | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const panelOpen = Boolean(selectedId || projectId);
@@ -37,20 +37,36 @@ export function MapView() {
         className={cx(
           "absolute inset-y-0 left-0 z-20 w-72 shrink-0 border-r border-slate-200 bg-white transition-transform dark:border-slate-800 dark:bg-slate-950 lg:static lg:translate-x-0",
           filtersOpen ? "translate-x-0 shadow-xl" : "-translate-x-full",
+          sidebarCollapsed && "lg:hidden",
         )}
       >
         <button aria-label="Close filters" className="absolute right-2 top-2 rounded p-1 text-slate-500 lg:hidden" onClick={() => setFiltersOpen(false)}>
           <X size={16} />
+        </button>
+        <button
+          aria-label="Collapse sidebar"
+          title="Collapse sidebar"
+          className="absolute right-2 top-2 hidden rounded p-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:block"
+          onClick={() => setSidebarCollapsed(true)}
+        >
+          <PanelLeftClose size={16} />
         </button>
         <MapSidebar onNewProject={() => setEditor({})} />
       </div>
 
       <div className="relative min-w-0 flex-1">
         <button
-          onClick={() => setFiltersOpen(true)}
-          className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs shadow-sm lg:hidden dark:border-slate-700 dark:bg-slate-900"
+          onClick={() => {
+            setFiltersOpen(true);
+            setSidebarCollapsed(false);
+          }}
+          className={cx(
+            "absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs shadow-sm dark:border-slate-700 dark:bg-slate-900",
+            sidebarCollapsed ? "lg:flex" : "lg:hidden",
+          )}
         >
-          <SlidersHorizontal size={14} /> Filters & projects
+          <SlidersHorizontal size={14} className="lg:hidden" />
+          <PanelLeftOpen size={14} className="hidden lg:block" /> Filters & projects
         </button>
         <ReactFlowProvider>
           <SuiteGraph />

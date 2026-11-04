@@ -11,6 +11,7 @@ import { CommandPalette, useCommandPalette } from "./CommandPalette";
 const nav = [
   { href: "/", label: "Suite Map" },
   { href: "/catalog", label: "Index & Search" },
+  { href: "/roadmap", label: "Contentful Roadmap" },
   { href: "/layers", label: "Layers" },
   { href: "/reference", label: "Naming & M&A" },
 ];

@@ -21,6 +21,8 @@ export interface UIState {
   projectId: string | null;
   stepIndex: number;
   userProjects: Project[];
+  /** Desktop only: the explorer's left sidebar is hidden. */
+  sidebarCollapsed: boolean;
 
   select: (id: string | null) => void;
   setHops: (h: 1 | 2) => void;
@@ -38,6 +40,7 @@ export interface UIState {
   saveUserProject: (p: Project) => void;
   deleteUserProject: (id: string) => void;
   importUserProjects: (ps: Project[]) => void;
+  setSidebarCollapsed: (v: boolean) => void;
 }
 
 export const defaultHiddenKinds = edgeKinds.map((k) => k.id);
@@ -58,6 +61,7 @@ export const useUI = create<UIState>()(
       projectId: null,
       stepIndex: 0,
       userProjects: [],
+      sidebarCollapsed: false,
 
       select: (id) => set({ selectedId: id, projectId: null, stepIndex: 0 }),
       setHops: (hops) => set({ hops }),
@@ -87,12 +91,13 @@ export const useUI = create<UIState>()(
           const ids = new Set(ps.map((p) => p.id));
           return { userProjects: [...s.userProjects.filter((x) => !ids.has(x.id)), ...ps.map((p) => ({ ...p, userCreated: true }))] };
         }),
+      setSidebarCollapsed: (sidebarCollapsed) => set({ sidebarCollapsed }),
     }),
     {
       name: "sf-suite-explorer",
       version: 1,
-      // URL carries the view state; only user projects live in localStorage.
-      partialize: (s) => ({ userProjects: s.userProjects }),
+      // URL carries the view state; only user projects and the sidebar preference live in localStorage.
+      partialize: (s) => ({ userProjects: s.userProjects, sidebarCollapsed: s.sidebarCollapsed }),
       // Rehydrated after mount (AppHeader) so server and first client render match.
       skipHydration: true,
     },
