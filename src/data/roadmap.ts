@@ -33,10 +33,10 @@ export const roadmap: RoadmapItem[] = [
     title: "B2C Commerce connector",
     status: "ga",
     products: ["contentful", "b2c-commerce"],
-    what: "A B2C Commerce Cloud connector, available in the Contentful Marketplace, that brings Contentful content into the storefront.",
+    what: "A B2C Commerce Cloud connector, available in the Contentful Marketplace, that brings SFCC product and catalog data into Contentful so editors can pick products and reference them in entries.",
     impact: [
-      "SFCC brands can start without custom integration work.",
-      "Pairs with Storefront Next for headless builds or Page Designer for existing storefronts.",
+      "Editors build product-led content, such as campaign pages, lookbooks and buying guides, without copying product data by hand.",
+      "SFCC stays the source of truth for products and pricing; Contentful stores the reference and the storytelling around it.",
     ],
   },
   {
