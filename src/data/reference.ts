@@ -56,7 +56,7 @@ export const surfaces: { surface: string; productIds: string[]; pattern: string;
   { surface: "Marketing Cloud Next", productIds: ["mc-growth"], pattern: "Content blocks on core; segments from Data 360", overlap: "Native content builders" },
   { surface: "Marketing Cloud Personalization", productIds: ["mc-personalization"], pattern: "Decides which Contentful variant to render", overlap: "Contentful Optimization / EXO" },
   { surface: "Agentforce", productIds: ["agentforce"], pattern: "Actions over CMA/MCP; grounding via Data 360 ingest (Ingestion API or sitemap connector today; first-party connector on roadmap)", overlap: "Agentforce content assembly claims are roadmap until shipped" },
-  { surface: "Data 360", productIds: ["data-360"], pattern: "Webhook to Ingestion API (streaming) per content type; unstructured stream for RAG; MuleSoft as the pipe", overlap: 'None; confirm "copied, not stored" in every conversation' },
+  { surface: "Data 360", productIds: ["data-360"], pattern: "Webhook to Ingestion API (streaming) per content type; unstructured stream for RAG; MuleSoft as the pipe", overlap: "None" },
   { surface: "Shield / security", productIds: ["shield"], pattern: "Shield covers the Data 360 copy; Contentful attests separately", overlap: "Two attestations in any security review" },
 ];
 

@@ -45,7 +45,6 @@ export const products: Product[] = [
       level: "high",
       pattern:
         "Ingest content metadata for segmentation and Agentforce grounding: decisioning, never delivery. Webhook to Ingestion API (streaming) per content type; unstructured stream for RAG.",
-      overlap: "None, but confirm \"copied, not stored\" in every conversation",
     },
     tags: ["headless"],
     summary:
