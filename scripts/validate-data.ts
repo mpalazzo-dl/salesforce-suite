@@ -7,6 +7,7 @@ import { seedProjects } from "../src/data/projects";
 import { naming, acquisitions, surfaces, layers } from "../src/data/reference";
 import { overviews } from "../src/data/overviews";
 import { productParts } from "../src/data/components";
+import { roadmap } from "../src/data/roadmap";
 
 const productIds = new Set(products.map((p) => p.id));
 const groupIds = groups.map((g) => g.id) as [string, ...string[]];
@@ -60,6 +61,12 @@ seedProjects.forEach((p) =>
       errors.push(`project ${p.id}: step edge ${s.edge} touches a product outside the project`);
   }),
 );
+
+const projectIds = new Set(seedProjects.map((p) => p.id));
+roadmap.forEach((r) => {
+  r.products.forEach((id) => productIds.has(id) || errors.push(`roadmap ${r.id}: unknown product "${id}"`));
+  r.projects?.forEach((id) => projectIds.has(id) || errors.push(`roadmap ${r.id}: unknown project "${id}"`));
+});
 
 products.forEach((p) => {
   if (!overviews[p.id]) errors.push(`product ${p.id} has no overview`);

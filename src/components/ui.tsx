@@ -94,13 +94,15 @@ export function Segmented<T extends string | number>({
   value,
   options,
   onChange,
+  className,
 }: {
   value: T;
   options: { value: T; label: string }[];
   onChange: (v: T) => void;
+  className?: string;
 }) {
   return (
-    <div className="inline-flex rounded-md border border-slate-300 p-0.5 dark:border-slate-600">
+    <div className={cx("inline-flex rounded-md border border-slate-300 p-0.5 dark:border-slate-600", className)}>
       {options.map((o) => (
         <button
           key={String(o.value)}

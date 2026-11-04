@@ -12,6 +12,8 @@ export interface RoadmapItem {
   what: string;
   /** What it changes in a deal or an architecture conversation. */
   impact: string[];
+  /** Seed project ids this item strengthens. */
+  projects?: string[];
   /** The next committed step among planned items. */
   nextUp?: boolean;
   /** Set when the item comes from secondhand or unconfirmed sources. */
@@ -33,6 +35,7 @@ export const roadmap: RoadmapItem[] = [
     title: "B2C Commerce connector",
     status: "ga",
     products: ["contentful", "b2c-commerce"],
+    projects: ["sfcc-headless"],
     what: "A B2C Commerce Cloud connector, available in the Contentful Marketplace, that brings SFCC product and catalog data into Contentful so editors can pick products and reference them in entries.",
     impact: [
       "Editors build product-led content, such as campaign pages, lookbooks and buying guides, without copying product data by hand.",
@@ -44,6 +47,7 @@ export const roadmap: RoadmapItem[] = [
     title: "CRM plugin for Contentful Optimization",
     status: "ga",
     products: ["optimization", "platform"],
+    projects: ["sfcc-headless", "omnichannel-marketing"],
     what: "A plugin that brings Salesforce CRM data into Contentful Optimization as audience attributes for personalization and experiments.",
     impact: [
       "Personalize on what Sales and Service know: lifecycle stage, account attributes, loyalty tier.",
@@ -57,6 +61,7 @@ export const roadmap: RoadmapItem[] = [
     nextUp: true,
     timing: "Next action; no date shared",
     products: ["contentful", "optimization"],
+    projects: ["fsc-portal", "knowledge-base"],
     what: "Moving Contentful off its own AWS footprint onto Hyperforce, Salesforce's public-cloud infrastructure.",
     impact: [
       "Security reviews get simpler: one infrastructure and trust program instead of two attestations.",
@@ -70,6 +75,7 @@ export const roadmap: RoadmapItem[] = [
     status: "in-progress",
     timing: "3-6 months (about Feb-May 2027)",
     products: ["contentful", "mc-growth"],
+    projects: ["omnichannel-marketing"],
     what: "Pull Contentful entries straight into Marketing Cloud email building, so marketers assemble emails from governed content.",
     impact: [
       "Replaces today's workaround of content blocks or AMPscript HTTPGet fetching Contentful at send time.",
@@ -82,6 +88,7 @@ export const roadmap: RoadmapItem[] = [
     status: "planned",
     timing: "Cited as 3-6 months after the acquisition close",
     products: ["contentful", "data-360"],
+    projects: ["knowledge-base", "fsc-portal", "omnichannel-marketing"],
     what: "A native connector that streams Contentful entries into Data 360 for segmentation and agent grounding.",
     impact: [
       "Replaces the webhook-to-Ingestion-API or MuleSoft pipe used today.",
