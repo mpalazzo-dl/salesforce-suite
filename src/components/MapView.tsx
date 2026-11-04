@@ -76,7 +76,11 @@ export function MapView() {
       {panelOpen && (
         <div className="absolute inset-y-0 right-0 z-20 w-full max-w-[400px] border-l border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950 xl:static xl:shadow-none">
           {projectId ? (
-            <ProjectPanel onEdit={(id) => setEditor(findProject(id, userProjects) ?? null)} />
+            <ProjectPanel
+              onEdit={(id) => setEditor(findProject(id, userProjects) ?? null)}
+              // Only the stack carries over; the new project's name and content start blank.
+              onSaveAs={(p) => setEditor({ products: p.products, stack: p.stack })}
+            />
           ) : (
             <DetailDrawer onSaveFocus={saveFocus} />
           )}

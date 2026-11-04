@@ -7,6 +7,7 @@ import { productById, products } from "@/data/products";
 import { relationships } from "@/data/relationships";
 import type { ClientNeed, Project, ProjectStack } from "@/data/types";
 import { cx } from "@/lib/format";
+import { stepInvolves } from "@/lib/project";
 import { useUI } from "@/store/ui";
 import { stackMeta } from "../ui";
 
@@ -48,7 +49,12 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
   const [caveats, setCaveats] = useState((initial.caveats ?? []).join("\n"));
 
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
-  const steps = stepsFor(picked);
+  // Keep the starting walkthrough for the products still picked, and generate steps only for products added since.
+  const pickedSet = new Set(picked);
+  const kept = (initial.steps ?? []).filter((st) => !stepInvolves(st, new Set(products.map((p) => p.id).filter((id) => !pickedSet.has(id)))));
+  const added = new Set(initial.steps?.length ? picked.filter((id) => !initial.products?.includes(id)) : picked);
+  const generated = stepsFor(picked).filter((st) => stepInvolves(st, added) && !kept.some((k) => k.edge === st.edge));
+  const steps = [...kept, ...generated];
 
   const save = () => {
     const id = initial.id ?? `${slug(name)}-${Date.now().toString(36).slice(-4)}`;
@@ -86,7 +92,7 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="block">
               <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Name</span>
-              <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Acme FSC + Agentforce" className="mt-1 w-full rounded-md border border-slate-300 bg-transparent px-2.5 py-1.5 dark:border-slate-600" />
+              <input autoFocus onFocus={(e) => e.target.select()} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Acme FSC + Agentforce" className="mt-1 w-full rounded-md border border-slate-300 bg-transparent px-2.5 py-1.5 dark:border-slate-600" />
             </label>
             <label className="block">
               <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Accounts (optional)</span>
@@ -130,9 +136,11 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
             </div>
           </div>
           <p className="text-xs text-slate-500">
-            {steps.length
-              ? `${steps.length} walkthrough steps will be generated from the mapped connections between these products.`
-              : "Pick connected products to generate a walkthrough."}
+            {!steps.length
+              ? "Pick connected products to generate a walkthrough."
+              : kept.length
+                ? `${steps.length} walkthrough steps: ${kept.length} kept from the original${generated.length ? `, ${generated.length} generated for added products` : ""}.`
+                : `${steps.length} walkthrough steps will be generated from the mapped connections between these products.`}
           </p>
           <label className="block">
             <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Talk track (one point per line)</span>

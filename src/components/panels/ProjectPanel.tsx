@@ -1,14 +1,15 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Pause, Pencil, Play, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, CopyPlus, Pause, Pencil, Play, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { groupById } from "@/data/groups";
 import { productById } from "@/data/products";
+import type { Project } from "@/data/types";
 import { cx } from "@/lib/format";
 import { findProject, useActiveProject, useUI } from "@/store/ui";
 import { CollapsibleSection, Pill, StackBadge, SwitchTrack } from "../ui";
 
-export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
+export function ProjectPanel({ onEdit, onSaveAs }: { onEdit: (id: string) => void; onSaveAs: (project: Project) => void }) {
   const { projectId, stepIndex, setStep, openProject, select, userProjects, excludedProducts, toggleExcluded } = useUI();
   const full = findProject(projectId, userProjects);
   // Steps follow the trimmed stack; the products list keeps every product so it can be toggled back.
@@ -33,6 +34,14 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-1 border-b border-slate-200 px-3 py-2 dark:border-slate-800">
         <span className="mr-auto text-[11px] font-semibold uppercase tracking-wider text-amber-600">Project</span>
+        <button
+          onClick={() => onSaveAs(project)}
+          title="Start a new project with the products toggled on"
+          className="flex items-center gap-1 rounded px-1.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          <CopyPlus size={14} />
+          Save as new
+        </button>
         {project.userCreated && (
           <button aria-label="Edit project" onClick={() => onEdit(project.id)} className="rounded p-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
             <Pencil size={14} />
