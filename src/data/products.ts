@@ -354,7 +354,10 @@ export const products: Product[] = [
     dataStore: "Own stack synced to core",
     pricing: "org-fee",
     pricingNote: "Org/edition fee by contacts",
-    contentfulFit: { level: "low", pattern: "Landing pages and forms rarely use Contentful." },
+    contentfulFit: {
+      level: "medium",
+      pattern: "Contentful-powered sites post forms to Account Engagement form handlers; Pardot-hosted landing pages rarely use Contentful.",
+    },
     tags: ["customer-facing"],
     summary: "B2B marketing automation: scoring, nurture, landing pages.",
   },

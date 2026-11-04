@@ -299,6 +299,31 @@ const raw: R[] = [
     label: "core sync",
     description: "Account Engagement keeps its own stack, synced to core.",
   },
+  {
+    from: "contentful",
+    to: "account-engagement",
+    kind: "data-sync",
+    label: "form handlers",
+    description:
+      "Forms on a Contentful-powered site post to Account Engagement form handlers, so the site owns the form UX and Account Engagement captures, scores and nurtures the prospect. Gated assets and nurture copy can live in Contentful.",
+    confidence: "inferred",
+  },
+  {
+    from: "account-engagement",
+    to: "sales-cloud",
+    kind: "data-sync",
+    label: "MQLs",
+    description: "The Salesforce Connector syncs prospects to Leads and Contacts and hands scored, graded MQLs to sales.",
+  },
+  {
+    from: "mc-growth",
+    to: "account-engagement",
+    kind: "overlap",
+    label: "successor",
+    description:
+      "MC Next covers forms, email, nurture and lead scoring on core, and is where Salesforce is steering Account Engagement customers. Most deals run one or the other per business unit, not both.",
+    confidence: "inferred",
+  },
 
   // ── Commerce ─────────────────────────────────────────────────────
   {
