@@ -119,7 +119,6 @@ export function ProjectPanel({ onEdit, onSaveAs }: { onEdit: (id: string) => voi
         )}
 
         <CollapsibleSection
-          defaultOpen={false}
           title={`Products · ${project.products.length}${excludedProducts.length ? ` of ${full.products.length}` : ""}`}
           right={
             excludedProducts.length > 0 && (
