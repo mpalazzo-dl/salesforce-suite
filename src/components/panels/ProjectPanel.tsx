@@ -2,14 +2,17 @@
 
 import { ChevronLeft, ChevronRight, Pause, Pencil, Play, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { groupById } from "@/data/groups";
 import { productById } from "@/data/products";
 import { cx } from "@/lib/format";
-import { findProject, useUI } from "@/store/ui";
-import { Pill, SectionTitle, StackBadge } from "../ui";
+import { findProject, useActiveProject, useUI } from "@/store/ui";
+import { CollapsibleSection, Pill, StackBadge, SwitchTrack } from "../ui";
 
 export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
-  const { projectId, stepIndex, setStep, openProject, select, userProjects } = useUI();
-  const project = findProject(projectId, userProjects);
+  const { projectId, stepIndex, setStep, openProject, select, userProjects, excludedProducts, toggleExcluded } = useUI();
+  const full = findProject(projectId, userProjects);
+  // Steps follow the trimmed stack; the products list keeps every product so it can be toggled back.
+  const project = useActiveProject();
   // Remember which project is playing, so switching projects or reaching the last step stops playback.
   const [playingId, setPlayingId] = useState<string | null>(null);
   const steps = project?.steps ?? [];
@@ -22,8 +25,9 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
     return () => clearTimeout(t);
   }, [playing, stepIndex, setStep]);
 
-  if (!project) return null;
+  if (!project || !full) return null;
   const step = steps[stepIndex];
+  const hiddenSteps = full.steps.length - steps.length;
 
   return (
     <div className="flex h-full flex-col">
@@ -48,19 +52,13 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
           )}
           {project.customers && <p className="text-xs text-slate-500">Accounts: {project.customers}</p>}
           <p className="mt-2 text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">{project.summary}</p>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {project.products.map((id) => (
-              <button key={id} onClick={() => select(id)} className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300">
-                {productById[id]?.shortName ?? id}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {steps.length > 0 && (
-          <div>
-            <SectionTitle
-              right={
+        {full.steps.length > 0 && (
+          <CollapsibleSection
+            title={steps.length ? `Walkthrough · ${stepIndex + 1}/${steps.length}` : "Walkthrough"}
+            right={
+              steps.length > 0 && (
                 <div className="flex items-center gap-1">
                   <button aria-label="Previous step" disabled={stepIndex === 0} onClick={() => setStep(stepIndex - 1)} className="rounded p-1 hover:bg-slate-100 disabled:opacity-30 dark:hover:bg-slate-800">
                     <ChevronLeft size={14} />
@@ -79,10 +77,9 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
                     <ChevronRight size={14} />
                   </button>
                 </div>
-              }
-            >
-              Walkthrough · {stepIndex + 1}/{steps.length}
-            </SectionTitle>
+              )
+            }
+          >
             <ol className="space-y-1.5">
               {steps.map((st, i) => (
                 <li key={i}>
@@ -104,34 +101,84 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
                 </li>
               ))}
             </ol>
-          </div>
+            {hiddenSteps > 0 && (
+              <p className="mt-2 text-xs text-slate-500">
+                {hiddenSteps} {hiddenSteps === 1 ? "step is" : "steps are"} hidden because {excludedProducts.length === 1 ? "a product is" : "products are"} toggled out of the stack.
+              </p>
+            )}
+          </CollapsibleSection>
         )}
 
+        <CollapsibleSection
+          defaultOpen={false}
+          title={`Products · ${project.products.length}${excludedProducts.length ? ` of ${full.products.length}` : ""}`}
+          right={
+            excludedProducts.length > 0 && (
+              <button
+                type="button"
+                onClick={() => excludedProducts.forEach(toggleExcluded)}
+                className="rounded px-1.5 py-0.5 text-[11px] font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                Include all
+              </button>
+            )
+          }
+        >
+          <ul className="divide-y divide-slate-100 rounded-lg border border-slate-200 dark:divide-slate-800 dark:border-slate-700">
+            {full.products.map((id) => {
+              const p = productById[id];
+              const on = !excludedProducts.includes(id);
+              return (
+                <li key={id} className="flex items-center gap-2 px-3 py-1.5">
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={on}
+                    aria-label={`${on ? "Remove" : "Add"} ${p?.name ?? id} ${on ? "from" : "to"} the stack`}
+                    onClick={() => toggleExcluded(id)}
+                  >
+                    <SwitchTrack on={on} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => select(id)}
+                    title="Open product details"
+                    className={cx("flex min-w-0 flex-1 items-center gap-2 text-left hover:underline", !on && "opacity-45")}
+                  >
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ background: p ? groupById[p.group].color : undefined }} />
+                    <span className={cx("truncate text-[13px] font-medium text-slate-900 dark:text-slate-100", !on && "line-through")}>{p?.name ?? id}</span>
+                    {p && <span className="ml-auto shrink-0 text-right text-[11px] text-slate-500">{p.category}</span>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </CollapsibleSection>
+
         {project.talkTrack.length > 0 && (
-          <div>
-            <SectionTitle>Talk track</SectionTitle>
+          <CollapsibleSection title="Talk track">
             <ul className="list-disc space-y-1 pl-4 text-[13px] text-slate-700 dark:text-slate-300">
               {project.talkTrack.map((t, i) => (
                 <li key={i}>{t}</li>
               ))}
             </ul>
-          </div>
+          </CollapsibleSection>
         )}
 
         {!!project.caveats?.length && (
           <div className="rounded-md border border-amber-300 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
-            <SectionTitle>When it&apos;s not a fit</SectionTitle>
-            <ul className="list-disc space-y-1 pl-4 text-[13px] text-amber-950 dark:text-amber-100">
-              {project.caveats.map((t, i) => (
-                <li key={i}>{t}</li>
-              ))}
-            </ul>
+            <CollapsibleSection title="When it's not a fit">
+              <ul className="list-disc space-y-1 pl-4 text-[13px] text-amber-950 dark:text-amber-100">
+                {project.caveats.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </CollapsibleSection>
           </div>
         )}
 
         {!!project.clientNeeds?.length && (
-          <div>
-            <SectionTitle>What else the client needs</SectionTitle>
+          <CollapsibleSection title="What else the client needs">
             <ul className="space-y-2">
               {project.clientNeeds.map((n, i) => (
                 <li key={i} className="text-[13px]">
@@ -147,7 +194,7 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
                 </li>
               ))}
             </ul>
-          </div>
+          </CollapsibleSection>
         )}
       </div>
     </div>

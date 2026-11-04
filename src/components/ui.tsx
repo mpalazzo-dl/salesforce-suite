@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { groupById } from "@/data/groups";
 import { tagById } from "@/data/tags";
 import type { FitLevel, GroupId, OnCore, ProjectStack, TagId } from "@/data/types";
@@ -87,6 +89,38 @@ export function SectionTitle({ children, right }: { children: React.ReactNode; r
       <h3 className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{children}</h3>
       {right}
     </div>
+  );
+}
+
+/** A SectionTitle that folds its content away. `right` sits outside the toggle, so its controls don't fold the section. */
+export function CollapsibleSection({
+  title,
+  right,
+  defaultOpen = true,
+  children,
+}: {
+  title: React.ReactNode;
+  right?: React.ReactNode;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <section>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          className="-ml-1 flex items-center gap-1 rounded px-1 text-[11px] font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+        >
+          <ChevronRight size={13} className={cx("transition-transform", open && "rotate-90")} />
+          {title}
+        </button>
+        {open && right}
+      </div>
+      {open && children}
+    </section>
   );
 }
 

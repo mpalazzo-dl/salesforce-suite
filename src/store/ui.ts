@@ -1,9 +1,11 @@
 "use client";
 
+import { useMemo } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { edgeKinds } from "@/data/relationships";
 import { seedProjects } from "@/data/projects";
+import { trimProject } from "@/lib/project";
 import type { EdgeKind, GroupId, Project, TagId } from "@/data/types";
 
 export type TagMode = "any" | "all";
@@ -20,6 +22,8 @@ export interface UIState {
   collapsed: GroupId[];
   projectId: string | null;
   stepIndex: number;
+  /** Products toggled out of the open project's stack. */
+  excludedProducts: string[];
   userProjects: Project[];
   /** Desktop only: the explorer's left sidebar is hidden. */
   sidebarCollapsed: boolean;
@@ -37,6 +41,7 @@ export interface UIState {
   setCollapsed: (g: GroupId[]) => void;
   openProject: (id: string | null, step?: number) => void;
   setStep: (i: number) => void;
+  toggleExcluded: (id: string) => void;
   saveUserProject: (p: Project) => void;
   deleteUserProject: (id: string) => void;
   importUserProjects: (ps: Project[]) => void;
@@ -60,10 +65,11 @@ export const useUI = create<UIState>()(
       collapsed: [],
       projectId: null,
       stepIndex: 0,
+      excludedProducts: [],
       userProjects: [],
       sidebarCollapsed: false,
 
-      select: (id) => set({ selectedId: id, projectId: null, stepIndex: 0 }),
+      select: (id) => set({ selectedId: id, projectId: null, stepIndex: 0, excludedProducts: [] }),
       setHops: (hops) => set({ hops }),
       toggleTag: (t) =>
         set((s) => ({ activeTags: s.activeTags.includes(t) ? s.activeTags.filter((x) => x !== t) : [...s.activeTags, t] })),
@@ -77,8 +83,20 @@ export const useUI = create<UIState>()(
       toggleCollapsed: (g) =>
         set((s) => ({ collapsed: s.collapsed.includes(g) ? s.collapsed.filter((x) => x !== g) : [...s.collapsed, g] })),
       setCollapsed: (collapsed) => set({ collapsed }),
-      openProject: (projectId, step = 0) => set({ projectId, stepIndex: step, selectedId: null }),
+      openProject: (projectId, step = 0) => set({ projectId, stepIndex: step, selectedId: null, excludedProducts: [] }),
       setStep: (stepIndex) => set({ stepIndex }),
+      toggleExcluded: (id) =>
+        set((s) => {
+          const project = findProject(s.projectId, s.userProjects);
+          if (!project) return {};
+          const excludedProducts = s.excludedProducts.includes(id)
+            ? s.excludedProducts.filter((x) => x !== id)
+            : [...s.excludedProducts, id];
+          // Stay on the current step if it survives the toggle.
+          const current = trimProject(project, s.excludedProducts).steps[s.stepIndex];
+          const stepIndex = Math.max(0, trimProject(project, excludedProducts).steps.indexOf(current));
+          return { excludedProducts, stepIndex };
+        }),
       saveUserProject: (p) =>
         set((s) => ({ userProjects: [...s.userProjects.filter((x) => x.id !== p.id), { ...p, userCreated: true }] })),
       deleteUserProject: (id) =>
@@ -112,4 +130,11 @@ export function useAllProjects(): Project[] {
 export function findProject(id: string | null, user: Project[]): Project | undefined {
   if (!id) return undefined;
   return seedProjects.find((p) => p.id === id) ?? user.find((p) => p.id === id);
+}
+
+/** The open project as the map shows it, minus toggled-off products. */
+export function useActiveProject(): Project | undefined {
+  const { projectId, userProjects, excludedProducts } = useUI();
+  const project = findProject(projectId, userProjects);
+  return useMemo(() => project && trimProject(project, excludedProducts), [project, excludedProducts]);
 }

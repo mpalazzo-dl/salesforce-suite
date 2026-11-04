@@ -30,6 +30,7 @@ function readUrl(): Partial<UIState> | null {
     collapsed: list(q.get("collapsed")).filter((g) => groupIds.has(g)) as GroupId[],
     projectId: q.get("project"),
     stepIndex: Number(q.get("step") ?? 0) || 0,
+    excludedProducts: list(q.get("without")),
   };
 }
 
@@ -38,6 +39,7 @@ export function toQuery(s: UIState): string {
   if (s.projectId) {
     q.set("project", s.projectId);
     if (s.stepIndex) q.set("step", String(s.stepIndex));
+    if (s.excludedProducts.length) q.set("without", s.excludedProducts.join(","));
   } else if (s.selectedId) q.set("focus", s.selectedId);
   if (s.hops === 2) q.set("hops", "2");
   if (s.activeTags.length) q.set("tags", s.activeTags.join(","));

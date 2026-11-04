@@ -17,7 +17,7 @@ import { groupById, groups } from "@/data/groups";
 import { productById } from "@/data/products";
 import { edgeKindById, edgeKinds } from "@/data/relationships";
 import type { GroupId } from "@/data/types";
-import { findProject, focusHiddenKinds, useUI } from "@/store/ui";
+import { focusHiddenKinds, useActiveProject, useUI } from "@/store/ui";
 import { CloudNode, type CloudNodeType } from "./CloudNode";
 import { FloatingEdge, type EdgeState, type FloatingEdgeType } from "./FloatingEdge";
 import { matchesTags, neighborhood, projectFocus, seedsFor, visibleRelationships, type Focus } from "./focus";
@@ -30,7 +30,7 @@ const edgeTypes = { floating: FloatingEdge };
 export function SuiteGraph() {
   const s = useUI();
   const { fitView } = useReactFlow();
-  const project = findProject(s.projectId, s.userProjects);
+  const project = useActiveProject();
 
   const layout = useMemo(() => computeLayout(s.collapsed), [s.collapsed]);
   const allOff = s.hiddenKinds.length === edgeKinds.length;
