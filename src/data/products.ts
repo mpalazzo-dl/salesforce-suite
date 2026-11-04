@@ -101,6 +101,31 @@ export const products: Product[] = [
     summary:
       "Agent Builder, Agent Script, Prompt Builder, Voice, Observability; Atlas Reasoning Engine; Einstein Trust Layer. An LLM planning loop grounded on core + Data 360.",
   },
+  {
+    id: "fin",
+    name: "Fin",
+    shortName: "Fin",
+    formerNames: ["Intercom"],
+    group: "ai",
+    category: "AI customer agent",
+    origin: "Fin (formerly Intercom), closed Sept 2026",
+    acquiredYear: 2026,
+    onCore: "no",
+    onCoreNote: "Own stack; works with the help desks customers already use",
+    hyperforce: "no",
+    hyperforceNote: "No migration announced",
+    frontend: "Messenger chat widget, email, WhatsApp, SMS, voice, Slack",
+    dataStore: "Own stack: knowledge sources, conversations",
+    pricing: "consumption",
+    pricingNote: "Per resolution before the acquisition; verify current pricing",
+    contentfulFit: {
+      level: "medium",
+      pattern: "Fin answers from synced knowledge sources, so Contentful help and product content can feed it by API sync or a site crawl. No first-party connector is confirmed.",
+      overlap: "Fin's own help center articles",
+    },
+    tags: ["customer-facing", "cf-overlap"],
+    summary: "Out-of-the-box AI customer agent across chat, email, messaging and voice; Salesforce's fast-to-deploy option alongside Agentforce.",
+  },
 
   // ── CRM Apps ─────────────────────────────────────────────────────
   {
@@ -268,9 +293,9 @@ export const products: Product[] = [
   // ── Marketing ────────────────────────────────────────────────────
   {
     id: "mc-growth",
-    name: "Marketing Cloud Growth / Advanced",
-    shortName: "MC Growth / Adv.",
-    formerNames: ["Marketing Cloud Next"],
+    name: "Marketing Cloud Next",
+    shortName: "MC Next",
+    formerNames: ["Marketing Cloud Growth / Advanced"],
     group: "marketing",
     category: "Marketing (new)",
     origin: "Organic rebuild 2024",
@@ -286,7 +311,7 @@ export const products: Product[] = [
       overlap: "Native content builders",
     },
     tags: ["cf-overlap"],
-    summary: "The core-native marketing rebuild, sitting on core and Data 360.",
+    summary: "The core-native marketing rebuild (Growth and Advanced editions), sitting on core and Data 360. What Salesforce is pushing now.",
   },
   {
     id: "mc-engagement",

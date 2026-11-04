@@ -2,7 +2,7 @@
 
 import { groupById } from "@/data/groups";
 import { tagById } from "@/data/tags";
-import type { FitLevel, GroupId, OnCore, TagId } from "@/data/types";
+import type { FitLevel, GroupId, OnCore, ProjectStack, TagId } from "@/data/types";
 import { coreMeta, cx, fitMeta } from "@/lib/format";
 
 export function Pill({ className, children, title }: { className?: string; children: React.ReactNode; title?: string }) {
@@ -13,7 +13,28 @@ export function Pill({ className, children, title }: { className?: string; child
   );
 }
 
-export const FitBadge = ({ level }: { level: FitLevel }) => (
+export const stackMeta: Record<ProjectStack, { label: string; short: string; title: string; className: string }> = {
+  turnkey: {
+    label: "Turnkey stack",
+    short: "turnkey",
+    title: "Hosting and frontend code ship with the stack",
+    className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  },
+  "bring-frontend": {
+    label: "Frontend + hosting needed",
+    short: "needs frontend",
+    title: "The client builds the frontend and picks a host, such as Vercel or Netlify",
+    className: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+  },
+};
+
+export const StackBadge = ({ stack, short }: { stack: ProjectStack; short?: boolean }) => (
+  <Pill title={stackMeta[stack].title} className={stackMeta[stack].className}>
+    {short ? stackMeta[stack].short : stackMeta[stack].label}
+  </Pill>
+);
+
+export const FitBadge =({ level }: { level: FitLevel }) => (
   <Pill className={fitMeta[level].className}>{fitMeta[level].label}</Pill>
 );
 

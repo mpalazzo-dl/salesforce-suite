@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { productById } from "@/data/products";
 import { cx } from "@/lib/format";
 import { findProject, useUI } from "@/store/ui";
-import { SectionTitle } from "../ui";
+import { Pill, SectionTitle, StackBadge } from "../ui";
 
 export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
   const { projectId, stepIndex, setStep, openProject, select, userProjects } = useUI();
@@ -41,6 +41,11 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
       <div className="flex-1 space-y-5 overflow-y-auto p-4">
         <div>
           <h2 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{project.name}</h2>
+          {project.stack && (
+            <div className="mt-1">
+              <StackBadge stack={project.stack} />
+            </div>
+          )}
           {project.customers && <p className="text-xs text-slate-500">Accounts: {project.customers}</p>}
           <p className="mt-2 text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">{project.summary}</p>
           <div className="mt-2 flex flex-wrap gap-1">
@@ -108,6 +113,38 @@ export function ProjectPanel({ onEdit }: { onEdit: (id: string) => void }) {
             <ul className="list-disc space-y-1 pl-4 text-[13px] text-slate-700 dark:text-slate-300">
               {project.talkTrack.map((t, i) => (
                 <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {!!project.caveats?.length && (
+          <div className="rounded-md border border-amber-300 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
+            <SectionTitle>When it&apos;s not a fit</SectionTitle>
+            <ul className="list-disc space-y-1 pl-4 text-[13px] text-amber-950 dark:text-amber-100">
+              {project.caveats.map((t, i) => (
+                <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {!!project.clientNeeds?.length && (
+          <div>
+            <SectionTitle>What else the client needs</SectionTitle>
+            <ul className="space-y-2">
+              {project.clientNeeds.map((n, i) => (
+                <li key={i} className="text-[13px]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">{n.need}</span>
+                    {n.coveredBy ? (
+                      <Pill className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Covered by {n.coveredBy}</Pill>
+                    ) : (
+                      <Pill className="bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">Client brings</Pill>
+                    )}
+                  </div>
+                  {n.note && <p className="mt-0.5 text-xs leading-relaxed text-slate-600 dark:text-slate-400">{n.note}</p>}
+                </li>
               ))}
             </ul>
           </div>

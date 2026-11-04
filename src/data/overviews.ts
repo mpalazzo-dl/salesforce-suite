@@ -81,6 +81,22 @@ export const overviews: Record<string, Overview> = {
       "Who owns the accuracy of the content agents answer from, and how does it get approved?",
     ],
   },
+  fin: {
+    what: "An AI customer agent from Fin (formerly Intercom), which Salesforce acquired in September 2026. Fin resolves customer questions end to end across live chat, email, WhatsApp, SMS, voice and Slack, using its own customer-service models and the knowledge sources it's connected to. Salesforce positions it next to Agentforce: Fin is the fast, out-of-the-box customer agent, and Agentforce is the deeply customizable platform. It keeps its own stack and works with the help desks customers already run.",
+    users: ["Support and CX leaders", "Customers and website visitors in chat and messaging", "Support ops admins"],
+    howUsed: [
+      "Embed the Messenger on a website or app and turn Fin on for inbound conversations",
+      "Connect knowledge sources such as help center articles, websites and documents",
+      "Hand off to human agents in the existing help desk when Fin can't resolve",
+      "Track resolution rate and tune answers and guidance",
+    ],
+    keyConcepts: ["Resolution", "Knowledge source", "Messenger", "Handoff", "Fin model suite"],
+    discovery: [
+      "Are they already running Fin or Intercom? Is Agentforce also in the conversation?",
+      "Where does the content Fin answers from live today, and who keeps it accurate?",
+      "Is the chatbot a service channel only, or also qualifying leads on the website?",
+    ],
+  },
   "sales-cloud": {
     what: "Salesforce's original CRM for selling. It tracks accounts, contacts, leads and opportunities through the pipeline, along with activities, forecasts and territories. Most Salesforce customers have it, and it is usually the anchor of their core org.",
     users: ["Account executives", "SDRs and BDRs", "Sales managers", "Revenue operations"],
@@ -196,7 +212,7 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "mc-growth": {
-    what: "Salesforce's next-generation marketing app, built natively on core and Data 360 rather than on the ExactTarget stack. The Growth edition targets smaller teams and Advanced adds richer journeys and personalization. Marketers plan campaigns, build email, SMS and WhatsApp messages, forms and landing pages, segment audiences in Data 360, and orchestrate sends with Flow, often starting from an Agentforce campaign brief.",
+    what: "Salesforce's next-generation marketing app, built natively on core and Data 360 rather than on the ExactTarget stack. Formerly sold as Marketing Cloud Growth / Advanced, it is now Salesforce's lead marketing offering. The Growth edition targets smaller teams and Advanced adds richer journeys and personalization. Marketers plan campaigns, build email, SMS and WhatsApp messages, forms and landing pages, segment audiences in Data 360, and orchestrate sends with Flow, often starting from an Agentforce campaign brief.",
     users: ["Marketers", "Marketing ops admins"],
     howUsed: [
       "Create campaigns manually or with an Agentforce marketing agent that drafts the brief, segment and content",
@@ -223,7 +239,7 @@ export const overviews: Record<string, Overview> = {
     discovery: [
       "How are content blocks built and maintained? Are they duplicated across business units?",
       "Do they already call external content with AMPscript HTTPGet?",
-      "Do they have plans to move to MC Growth/Advanced?",
+      "Do they have plans to move to MC Next?",
     ],
   },
   "account-engagement": {

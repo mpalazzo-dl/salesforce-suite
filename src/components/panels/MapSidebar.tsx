@@ -8,7 +8,7 @@ import { tags } from "@/data/tags";
 import type { Project } from "@/data/types";
 import { cx } from "@/lib/format";
 import { useAllProjects, useUI } from "@/store/ui";
-import { SectionTitle, Segmented, SwitchTrack, TagChip } from "../ui";
+import { SectionTitle, Segmented, stackMeta, SwitchTrack, TagChip } from "../ui";
 
 export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
   const s = useUI();
@@ -204,6 +204,11 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
               >
                 <Play size={12} className="shrink-0 opacity-60" />
                 <span className="flex-1">{p.name}</span>
+                {p.stack && (
+                  <span title={stackMeta[p.stack].title} className={cx("rounded px-1 text-[10px]", stackMeta[p.stack].className)}>
+                    {stackMeta[p.stack].short}
+                  </span>
+                )}
                 {p.userCreated && <span className="rounded bg-slate-200 px-1 text-[10px] text-slate-600 dark:bg-slate-700 dark:text-slate-300">mine</span>}
               </button>
               {p.userCreated && (

@@ -5,9 +5,10 @@ import { useState } from "react";
 import { groups } from "@/data/groups";
 import { productById, products } from "@/data/products";
 import { relationships } from "@/data/relationships";
-import type { Project } from "@/data/types";
+import type { ClientNeed, Project, ProjectStack } from "@/data/types";
 import { cx } from "@/lib/format";
 import { useUI } from "@/store/ui";
+import { stackMeta } from "../ui";
 
 const slug = (s: string) =>
   s
@@ -15,6 +16,14 @@ const slug = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
     .slice(0, 40) || "project";
+
+/** Client needs edit as one line each: "Need (covered by X): note", where the parenthetical and note are optional. */
+const needToLine = (n: ClientNeed) => `${n.need}${n.coveredBy ? ` (covered by ${n.coveredBy})` : ""}${n.note ? `: ${n.note}` : ""}`;
+
+function lineToNeed(line: string): ClientNeed {
+  const m = line.match(/^(.*?)(?:\s*\(covered by ([^)]+)\))?(?::\s*(.*))?$/i)!;
+  return { need: m[1].trim(), coveredBy: m[2]?.trim() || undefined, note: m[3]?.trim() || undefined };
+}
 
 /** Walkthrough steps are generated from the mapped relationships between the chosen products. */
 function stepsFor(ids: string[]) {
@@ -34,6 +43,9 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
   const [summary, setSummary] = useState(initial.summary ?? "");
   const [picked, setPicked] = useState<string[]>(initial.products ?? []);
   const [talk, setTalk] = useState((initial.talkTrack ?? []).join("\n"));
+  const [needs, setNeeds] = useState((initial.clientNeeds ?? []).map(needToLine).join("\n"));
+  const [stack, setStack] = useState<ProjectStack | "">(initial.stack ?? "");
+  const [caveats, setCaveats] = useState((initial.caveats ?? []).join("\n"));
 
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   const steps = stepsFor(picked);
@@ -48,6 +60,9 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
       products: picked,
       steps,
       talkTrack: talk.split("\n").map((t) => t.trim()).filter(Boolean),
+      clientNeeds: needs.split("\n").map((t) => t.trim()).filter(Boolean).map(lineToNeed),
+      stack: stack || undefined,
+      caveats: caveats.split("\n").map((t) => t.trim()).filter(Boolean),
     });
     openProject(id);
     onClose();
@@ -122,6 +137,31 @@ export function ProjectEditor({ initial, onClose }: { initial: Partial<Project>;
           <label className="block">
             <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Talk track (one point per line)</span>
             <textarea value={talk} onChange={(e) => setTalk(e.target.value)} rows={3} className="mt-1 w-full rounded-md border border-slate-300 bg-transparent px-2.5 py-1.5 dark:border-slate-600" />
+          </label>
+          <label className="block">
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-300">When it&apos;s not a fit (one caveat per line)</span>
+            <textarea value={caveats} onChange={(e) => setCaveats(e.target.value)} rows={2} className="mt-1 w-full rounded-md border border-slate-300 bg-transparent px-2.5 py-1.5 dark:border-slate-600" />
+          </label>
+          <label className="block">
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+              What else the client needs (one per line, e.g. &quot;Frontend hosting (covered by Managed Runtime): no Vercel contract&quot;)
+            </span>
+            <textarea value={needs} onChange={(e) => setNeeds(e.target.value)} rows={3} className="mt-1 w-full rounded-md border border-slate-300 bg-transparent px-2.5 py-1.5 dark:border-slate-600" />
+          </label>
+          <label className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+            Frontend and hosting
+            <select
+              value={stack}
+              onChange={(e) => setStack(e.target.value as ProjectStack | "")}
+              className="rounded-md border border-slate-300 bg-transparent px-2 py-1 dark:border-slate-600"
+            >
+              <option value="">Not specified</option>
+              {(Object.keys(stackMeta) as ProjectStack[]).map((k) => (
+                <option key={k} value={k}>
+                  {stackMeta[k].label}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
         <div className="flex justify-end gap-2 border-t border-slate-200 px-5 py-3 dark:border-slate-800">

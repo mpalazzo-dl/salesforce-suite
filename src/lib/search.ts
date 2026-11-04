@@ -103,6 +103,8 @@ export function searchAll(query: string, projects: Project[]): Hit[] {
         [p.products.map((id) => productById[id]?.name).join(" "), 1.5],
         [p.steps.map((x) => `${x.title} ${x.body}`).join(" "), 1],
         [p.talkTrack.join(" "), 1],
+        [(p.clientNeeds ?? []).map((n) => `${n.need} ${n.coveredBy ?? ""} ${n.note ?? ""}`).join(" "), 1],
+        [(p.caveats ?? []).join(" "), 1],
       ],
       ts,
     );

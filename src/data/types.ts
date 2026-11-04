@@ -108,6 +108,16 @@ export interface ProjectStep {
   body: string;
 }
 
+export type ProjectStack = "turnkey" | "bring-frontend";
+
+/** Something beyond the mapped products the client needs to ship the project. */
+export interface ClientNeed {
+  need: string;
+  note?: string;
+  /** What already provides it in this stack (e.g. "Managed Runtime"); omitted when the client has to bring it. */
+  coveredBy?: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -116,5 +126,13 @@ export interface Project {
   products: string[];
   steps: ProjectStep[];
   talkTrack: string[];
+  clientNeeds?: ClientNeed[];
+  /** Where this pattern stops fitting, so it isn't pitched for the wrong deal. */
+  caveats?: string[];
+  /**
+   * "turnkey": hosting and frontend code ship with the stack (e.g. Storefront Next on Managed Runtime).
+   * "bring-frontend": the client builds the frontend and picks a host (e.g. Next.js on Vercel).
+   */
+  stack?: ProjectStack;
   userCreated?: boolean;
 }

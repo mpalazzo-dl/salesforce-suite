@@ -10,6 +10,7 @@ export const naming: { old: string; current: string; productId: string; note?: s
   { old: "Data Cloud", current: "Data 360", productId: "data-360", note: "Kept new name" },
   { old: "Einstein Copilot", current: "Agentforce 360", productId: "agentforce", note: "Kept new name" },
   { old: "Demandware / SFCC", current: "B2C Commerce Cloud", productId: "b2c-commerce" },
+  { old: "Marketing Cloud Growth / Advanced", current: "Marketing Cloud Next", productId: "mc-growth", note: "Growth / Advanced are now editions" },
   { old: "ExactTarget", current: "Marketing Cloud Engagement", productId: "mc-engagement" },
   { old: "Pardot", current: "Account Engagement", productId: "account-engagement" },
   { old: "Evergage / Interaction Studio", current: "Marketing Cloud Personalization", productId: "mc-personalization" },
@@ -23,6 +24,7 @@ export const naming: { old: string; current: string; productId: string; note?: s
 
 export const acquisitions: { date: string; year: number; company: string; foldsInto: string; status: string; productId?: string }[] = [
   { date: "June 2026 (signed)", year: 2026.5, company: "Contentful", foldsInto: "Content layer across Customer 360, Agentforce, Salesforce Platform", status: "Close expected fiscal Q3 FY27 (Aug-Oct 2026); AEs cite a first-party Data 360 connector 3-6 months after close", productId: "contentful" },
+  { date: "Sept 2026 (closed)", year: 2026.7, company: "Fin (formerly Intercom)", foldsInto: "Customer service AI alongside Agentforce; part of Salesforce AI Labs", status: "Closed Sept 10, 2026; continues serving its own customers", productId: "fin" },
   { date: "March 2026 (closed)", year: 2026.2, company: "Cimulate", foldsInto: "Commerce Cloud search and discovery", status: "Integrating into Agentforce Commerce", productId: "cimulate" },
   { date: "2025", year: 2025, company: "Informatica", foldsInto: "Data 360 governance, MDM, catalog", status: "Closed; coexisting platform", productId: "informatica" },
   { date: "2025", year: 2025, company: "Convergence AI, Qualified, Momentum, Regrello", foldsInto: "Agentforce (agents, pipeline, workflow)", status: "Closed", productId: "agentforce" },
@@ -51,7 +53,7 @@ export const surfaces: { surface: string; productIds: string[]; pattern: string;
   { surface: "B2C Commerce (Demandware)", productIds: ["b2c-commerce"], pattern: "Page Designer components or a Storefront Next headless storefront call CDA; no shared data model", overlap: "Page Designer content assets; Cimulate for product search only" },
   { surface: "B2B / D2C Commerce", productIds: ["b2b-commerce"], pattern: "LWC on core calls CDA", overlap: "Experience Cloud CMS" },
   { surface: "Marketing Cloud Engagement", productIds: ["mc-engagement"], pattern: "Content Builder blocks or AMPscript HTTPGet at send time", overlap: "Content Builder as a content store" },
-  { surface: "Marketing Cloud Growth / Advanced", productIds: ["mc-growth"], pattern: "Content blocks on core; segments from Data 360", overlap: "Native content builders" },
+  { surface: "Marketing Cloud Next", productIds: ["mc-growth"], pattern: "Content blocks on core; segments from Data 360", overlap: "Native content builders" },
   { surface: "Marketing Cloud Personalization", productIds: ["mc-personalization"], pattern: "Decides which Contentful variant to render", overlap: "Contentful Optimization / EXO" },
   { surface: "Agentforce", productIds: ["agentforce"], pattern: "Actions over CMA/MCP; grounding via Data 360 ingest (Ingestion API or sitemap connector today; first-party connector on roadmap)", overlap: "Agentforce content assembly claims are roadmap until shipped" },
   { surface: "Data 360", productIds: ["data-360"], pattern: "Webhook to Ingestion API (streaming) per content type; unstructured stream for RAG; MuleSoft as the pipe", overlap: 'None; confirm "copied, not stored" in every conversation' },

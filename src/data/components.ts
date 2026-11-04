@@ -42,6 +42,12 @@ export const productParts: Record<string, ProductPart[]> = {
     { name: "Einstein Trust Layer", what: "Data masking, toxicity checks, audit trail and zero data retention with LLM providers." },
     { name: "Agentforce Voice", what: "Voice-channel agents for contact centers." },
   ],
+  fin: [
+    { name: "Fin AI Agent", what: "Resolves customer questions end to end across chat, email, WhatsApp, SMS, voice and Slack." },
+    { name: "Fin model suite", what: "Fin's own AI models trained for customer service." },
+    { name: "Knowledge sources", what: "The help articles, websites and documents Fin answers from." },
+    { name: "Messenger", what: "The chat widget embedded on websites and in apps.", aka: ["Intercom Messenger"] },
+  ],
   "sales-cloud": [
     { name: "Einstein Activity Capture", what: "Syncs email and calendar activity to Salesforce records automatically." },
     { name: "Sales Engagement", what: "Cadences and work queues for SDR outreach (formerly High Velocity Sales).", aka: ["High Velocity Sales"] },
