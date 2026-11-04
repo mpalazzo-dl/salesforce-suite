@@ -107,7 +107,7 @@ export function CollapsibleSection({
   const [open, setOpen] = useState(defaultOpen);
   return (
     <section>
-      <div className="mb-2 flex items-center justify-between gap-2">
+      <div className={cx("flex items-center justify-between gap-2", open && "mb-2")}>
         <button
           type="button"
           onClick={() => setOpen(!open)}

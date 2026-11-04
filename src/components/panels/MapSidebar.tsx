@@ -8,7 +8,7 @@ import { tags } from "@/data/tags";
 import type { Project } from "@/data/types";
 import { cx } from "@/lib/format";
 import { useAllProjects, useUI } from "@/store/ui";
-import { SectionTitle, Segmented, stackMeta, SwitchTrack, TagChip } from "../ui";
+import { CollapsibleSection, Segmented, stackMeta, SwitchTrack, TagChip } from "../ui";
 
 export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
   const s = useUI();
@@ -37,8 +37,7 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
 
   return (
     <aside className="flex h-full w-full flex-col gap-5 overflow-y-auto p-4 text-sm">
-      <section>
-        <SectionTitle>Focus</SectionTitle>
+      <CollapsibleSection title="Focus">
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => s.select(s.selectedId === "contentful" ? null : "contentful")}
@@ -72,23 +71,21 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
         <p className="mt-2 text-[11px] leading-snug text-slate-500">
           Click a product to light up what it touches. Click a cloud title to focus the whole cloud; double-click or use the chevron to collapse it.
         </p>
-      </section>
+      </CollapsibleSection>
 
-      <section>
-        <SectionTitle
-          right={
-            <Segmented
-              value={s.tagMode}
-              onChange={s.setTagMode}
-              options={[
-                { value: "any", label: "Any" },
-                { value: "all", label: "All" },
-              ]}
-            />
-          }
-        >
-          Tags
-        </SectionTitle>
+      <CollapsibleSection
+        title={<>Tags{s.activeTags.length > 0 && <span className="font-normal normal-case tracking-normal"> ({s.activeTags.length} on)</span>}</>}
+        right={
+          <Segmented
+            value={s.tagMode}
+            onChange={s.setTagMode}
+            options={[
+              { value: "any", label: "Any" },
+              { value: "all", label: "All" },
+            ]}
+          />
+        }
+      >
         <div className="flex flex-wrap gap-1.5">
           {tags.map((t) => (
             <TagChip key={t.id} id={t.id} size="xs" active={s.activeTags.includes(t.id)} onClick={() => s.toggleTag(t.id)} />
@@ -105,26 +102,24 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
             </button>
           )}
         </div>
-      </section>
+      </CollapsibleSection>
 
-      <section>
-        <SectionTitle
-          right={
-            <button
-              type="button"
-              role="switch"
-              aria-checked={allKindsOn}
-              aria-label="All connections"
-              onClick={() => s.setHiddenKinds(allKindsOn ? edgeKinds.map((k) => k.id) : [])}
-              className="flex items-center gap-1.5 rounded text-xs font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
-            >
-              All
-              <SwitchTrack on={allKindsOn} />
-            </button>
-          }
-        >
-          Connections <span className="font-normal normal-case tracking-normal">({kindsOn} of {edgeKinds.length} on)</span>
-        </SectionTitle>
+      <CollapsibleSection
+        title={<>Connections <span className="font-normal normal-case tracking-normal">({kindsOn} of {edgeKinds.length} on)</span></>}
+        right={
+          <button
+            type="button"
+            role="switch"
+            aria-checked={allKindsOn}
+            aria-label="All connections"
+            onClick={() => s.setHiddenKinds(allKindsOn ? edgeKinds.map((k) => k.id) : [])}
+            className="flex items-center gap-1.5 rounded text-xs font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+          >
+            All
+            <SwitchTrack on={allKindsOn} />
+          </button>
+        }
+      >
         <ul className="-mx-1.5 space-y-0.5">
           {edgeKinds.map((k) => {
             const on = !s.hiddenKinds.includes(k.id);
@@ -154,42 +149,40 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
           <input type="checkbox" checked={s.showInferred} onChange={(e) => s.setShowInferred(e.target.checked)} />
           Show inferred links <span className="text-slate-400">(dashed: not in the index)</span>
         </label>
-      </section>
+      </CollapsibleSection>
 
-      <section>
-        <SectionTitle
-          right={
-            <div className="flex items-center gap-1 text-slate-500">
-              <button title="Import projects (JSON)" className="rounded p-1 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => fileRef.current?.click()}>
-                <Upload size={14} />
-              </button>
-              <button
-                title="Export your projects (JSON)"
-                disabled={!s.userProjects.length}
-                className="rounded p-1 hover:bg-slate-100 disabled:opacity-30 dark:hover:bg-slate-800"
-                onClick={exportProjects}
-              >
-                <Download size={14} />
-              </button>
-              <button title="New project" className="rounded p-1 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={onNewProject}>
-                <FolderPlus size={14} />
-              </button>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="application/json"
-                className="hidden"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) importProjects(f);
-                  e.target.value = "";
-                }}
-              />
-            </div>
-          }
-        >
-          Projects
-        </SectionTitle>
+      <CollapsibleSection
+        title={`Projects · ${projects.length}`}
+        right={
+          <div className="flex items-center gap-1 text-slate-500">
+            <button title="Import projects (JSON)" className="rounded p-1 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => fileRef.current?.click()}>
+              <Upload size={14} />
+            </button>
+            <button
+              title="Export your projects (JSON)"
+              disabled={!s.userProjects.length}
+              className="rounded p-1 hover:bg-slate-100 disabled:opacity-30 dark:hover:bg-slate-800"
+              onClick={exportProjects}
+            >
+              <Download size={14} />
+            </button>
+            <button title="New project" className="rounded p-1 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={onNewProject}>
+              <FolderPlus size={14} />
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) importProjects(f);
+                e.target.value = "";
+              }}
+            />
+          </div>
+        }
+      >
         <ul className="space-y-1">
           {projects.map((p) => (
             <li key={p.id} className="group flex items-center gap-1">
@@ -223,7 +216,7 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
             </li>
           ))}
         </ul>
-      </section>
+      </CollapsibleSection>
     </aside>
   );
 }
