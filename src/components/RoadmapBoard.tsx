@@ -1,6 +1,6 @@
 "use client";
 
-import { Play } from "lucide-react";
+import { ChevronRight, ChevronsDownUp, ChevronsUpDown, Play } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { productById } from "@/data/products";
@@ -20,55 +20,66 @@ const roadmapProducts = [...new Set(roadmap.flatMap((r) => r.products))];
 // In the seed projects' own order.
 const roadmapProjects = seedProjects.map((p) => p.id).filter((id) => roadmap.some((r) => r.projects?.includes(id)));
 
-function Card({ r, showStatus }: { r: RoadmapItem; showStatus?: boolean }) {
+function Card({ r, showStatus, open, onToggle }: { r: RoadmapItem; showStatus?: boolean; open: boolean; onToggle: () => void }) {
   const status = roadmapStatuses.find((s) => s.id === r.status)!;
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex flex-wrap items-center gap-1.5">
-        {showStatus && <span className={cx("rounded px-1.5 py-0.5 text-[10px] font-semibold", tone[r.status].pill)}>{status.label}</span>}
-        {r.nextUp && (
-          <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-semibold text-yellow-950">Next up</span>
-        )}
-        {r.unconfirmed && (
-          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800">unconfirmed</span>
-        )}
-      </div>
-      <h3 className="mt-1.5 text-[15px] font-semibold leading-snug">{r.title}</h3>
-      {r.timing && <p className="mt-0.5 text-xs font-medium text-slate-500">{r.timing}</p>}
-      <p className="mt-2 text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">{r.what}</p>
-      <ul className="mt-2 list-disc space-y-1 pl-4 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-        {r.impact.map((t) => (
-          <li key={t}>{t}</li>
-        ))}
-      </ul>
-      {!!r.projects?.length && (
-        <div className="mt-3 flex flex-wrap items-center gap-1">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Projects</span>
-          {r.projects.map((id) => (
-            <Link
-              key={id}
-              href={`/?project=${id}`}
-              onClick={() => useUI.getState().openProject(id)}
-              title="Open this project's walkthrough on the map"
-              className="flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-900 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-            >
-              <Play size={9} className="opacity-70" />
-              {seedProjects.find((p) => p.id === id)?.name ?? id}
-            </Link>
-          ))}
+      {(showStatus || r.nextUp || r.unconfirmed) && (
+        <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+          {showStatus && <span className={cx("rounded px-1.5 py-0.5 text-[10px] font-semibold", tone[r.status].pill)}>{status.label}</span>}
+          {r.nextUp && (
+            <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-semibold text-yellow-950">Next up</span>
+          )}
+          {r.unconfirmed && (
+            <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800">unconfirmed</span>
+          )}
         </div>
       )}
-      <div className="mt-2 flex flex-wrap gap-1">
-        {r.products.map((id) => (
-          <Link
-            key={id}
-            href={`/?focus=${id}`}
-            className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
-          >
-            {productById[id]?.shortName ?? id}
-          </Link>
-        ))}
-      </div>
+      <h3 className="text-[15px] font-semibold leading-snug">
+        <button type="button" onClick={onToggle} aria-expanded={open} className="group flex w-full cursor-pointer items-start gap-1.5 text-left hover:text-slate-600 dark:hover:text-slate-300">
+          <ChevronRight size={16} className={cx("mt-0.5 shrink-0 text-slate-400 transition-transform group-hover:text-slate-700 dark:group-hover:text-slate-200", open && "rotate-90")} />
+          {r.title}
+        </button>
+      </h3>
+      {r.timing && <p className="mt-0.5 pl-[22px] text-xs font-medium text-slate-500">{r.timing}</p>}
+      {open && (
+        <>
+          <p className="mt-2 text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">{r.what}</p>
+          <ul className="mt-2 list-disc space-y-1 pl-4 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+            {r.impact.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          {!!r.projects?.length && (
+            <div className="mt-3 flex flex-wrap items-center gap-1">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Projects</span>
+              {r.projects.map((id) => (
+                <Link
+                  key={id}
+                  href={`/?project=${id}`}
+                  onClick={() => useUI.getState().openProject(id)}
+                  title="Open this project's walkthrough on the map"
+                  className="flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-900 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                >
+                  <Play size={9} className="opacity-70" />
+                  {seedProjects.find((p) => p.id === id)?.name ?? id}
+                </Link>
+              ))}
+            </div>
+          )}
+          <div className="mt-2 flex flex-wrap gap-1">
+            {r.products.map((id) => (
+              <Link
+                key={id}
+                href={`/?focus=${id}`}
+                className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+              >
+                {productById[id]?.shortName ?? id}
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
     </article>
   );
 }
@@ -119,8 +130,20 @@ export function RoadmapBoard() {
   // Next-up items lead their lane.
   const items = roadmap.filter((r) => byProduct(r) && byProject(r)).sort((a, b) => Number(!!b.nextUp) - Number(!!a.nextUp));
   const count = (s: RoadmapStatus) => items.filter((r) => r.status === s).length;
-  const shown = items.filter(byStatus).length;
+  const shownItems = items.filter(byStatus);
+  const shown = shownItems.length;
   const active = status !== "all" || !!product || !!project;
+
+  // Cards default open for the first three in each column (or in the single-stage grid); clicks and the toggle override that.
+  const [openOverrides, setOpenOverrides] = useState<Record<string, boolean>>({});
+  const isOpen = (id: string) => {
+    if (id in openOverrides) return openOverrides[id];
+    const r = shownItems.find((x) => x.id === id)!;
+    return shownItems.filter((x) => x.status === r.status).indexOf(r) < 3;
+  };
+  const toggleCard = (id: string) => setOpenOverrides((o) => ({ ...o, [id]: !isOpen(id) }));
+  const allOpen = shownItems.every((r) => isOpen(r.id));
+  const setAll = (open: boolean) => setOpenOverrides(Object.fromEntries(roadmap.map((r) => [r.id, open])));
 
   // Each dropdown counts what it would show given the other filters.
   const projectOptions = roadmapProjects.map((id) => ({
@@ -136,39 +159,50 @@ export function RoadmapBoard() {
 
   return (
     <div className="mt-6">
-      <div className="flex flex-wrap items-end gap-x-5 gap-y-3 rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Stage</span>
-          <Segmented
-            className="h-8"
-            value={status}
-            onChange={setStatus}
-            options={[
-              { value: "all", label: `All · ${items.length}` },
-              ...roadmapStatuses.map((s) => ({ value: s.id, label: `${s.label} · ${count(s.id)}` })),
-            ]}
-          />
-        </div>
-        <FilterSelect label="Project" value={project} onChange={setProject} options={projectOptions} />
-        <FilterSelect label="Product" value={product} onChange={setProduct} options={productOptions} />
-        <div className="ml-auto flex items-center gap-3 self-center text-xs text-slate-500">
-          <span>
-            Showing {shown} of {roadmap.length}
-          </span>
-          {active && (
+      <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
+        <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Stage</span>
+            <Segmented
+              className="h-8"
+              value={status}
+              onChange={setStatus}
+              options={[
+                { value: "all", label: `All · ${items.length}` },
+                ...roadmapStatuses.map((s) => ({ value: s.id, label: `${s.label} · ${count(s.id)}` })),
+              ]}
+            />
+          </div>
+          <FilterSelect label="Project" value={project} onChange={setProject} options={projectOptions} />
+          <FilterSelect label="Product" value={product} onChange={setProduct} options={productOptions} />
+          <div className="ml-auto flex h-8 items-center gap-3 text-xs text-slate-500">
+            {active && (
+              <button
+                type="button"
+                onClick={() => {
+                  setStatus("all");
+                  setProduct("");
+                  setProject("");
+                }}
+                className="rounded-md px-2 py-1 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                Clear filters
+              </button>
+            )}
             <button
               type="button"
-              onClick={() => {
-                setStatus("all");
-                setProduct("");
-                setProject("");
-              }}
-              className="rounded-md px-2 py-1 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              disabled={!shown}
+              onClick={() => setAll(!allOpen)}
+              className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md border border-slate-300 px-2.5 font-medium disabled:cursor-not-allowed text-slate-700 hover:bg-slate-100 disabled:opacity-40 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              Clear filters
+              {allOpen ? <ChevronsDownUp size={14} /> : <ChevronsUpDown size={14} />}
+              {allOpen ? "Collapse all" : "Expand all"}
             </button>
-          )}
+          </div>
         </div>
+        <p className="mt-2 text-xs text-slate-500">
+          Showing {shown} of {roadmap.length}
+        </p>
       </div>
 
       {status === "all" ? (
@@ -186,7 +220,7 @@ export function RoadmapBoard() {
                   <p className="mt-0.5 text-xs text-slate-500">{s.blurb}</p>
                 </div>
                 {lane.map((r) => (
-                  <Card key={r.id} r={r} />
+                  <Card key={r.id} r={r} open={isOpen(r.id)} onToggle={() => toggleCard(r.id)} />
                 ))}
                 {!lane.length && <p className="rounded-lg border border-dashed border-slate-300 p-4 text-xs text-slate-400 dark:border-slate-700">Nothing here yet.</p>}
               </section>
@@ -200,7 +234,7 @@ export function RoadmapBoard() {
             {items
               .filter((r) => r.status === status)
               .map((r) => (
-                <Card key={r.id} r={r} showStatus />
+                <Card key={r.id} r={r} showStatus open={isOpen(r.id)} onToggle={() => toggleCard(r.id)} />
               ))}
           </div>
           {!count(status) && <p className="mt-3 text-sm text-slate-400">Nothing matches these filters.</p>}

@@ -60,11 +60,11 @@ export function MapSidebar({ onNewProject }: { onNewProject: () => void }) {
           />
         </div>
         <div className="mt-2 flex gap-2 text-xs">
-          <button className="text-slate-600 underline-offset-2 hover:underline dark:text-slate-300" onClick={() => s.setCollapsed(groups.map((g) => g.id))}>
+          <button className="cursor-pointer text-slate-600 underline-offset-2 hover:underline dark:text-slate-300" onClick={() => s.setCollapsed(groups.map((g) => g.id))}>
             Collapse all clouds
           </button>
           <span className="text-slate-300">·</span>
-          <button className="text-slate-600 underline-offset-2 hover:underline dark:text-slate-300" onClick={() => s.setCollapsed([])}>
+          <button className="cursor-pointer text-slate-600 underline-offset-2 hover:underline dark:text-slate-300" onClick={() => s.setCollapsed([])}>
             Expand all
           </button>
         </div>

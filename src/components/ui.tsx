@@ -112,7 +112,7 @@ export function CollapsibleSection({
           type="button"
           onClick={() => setOpen(!open)}
           aria-expanded={open}
-          className="-ml-1 flex items-center gap-1 rounded px-1 text-[11px] font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+          className="-ml-1 flex cursor-pointer items-center gap-1 rounded px-1 text-[11px] font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
         >
           <ChevronRight size={13} className={cx("transition-transform", open && "rotate-90")} />
           {title}

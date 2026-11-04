@@ -45,7 +45,7 @@ function CloudNodeImpl({ data, width, height }: NodeProps<CloudNodeType>) {
       <Handle type="source" position={Position.Top} style={handleStyle} isConnectable={false} />
       <div className="flex items-center gap-1.5 px-3 pt-2.5">
         <button
-          className="nodrag rounded p-0.5 text-slate-500 hover:bg-black/5 dark:hover:bg-white/10"
+          className="nodrag cursor-pointer rounded p-0.5 text-slate-500 hover:bg-black/5 hover:text-slate-800 dark:hover:bg-white/10"
           aria-label={collapsed ? `Expand ${g.name}` : `Collapse ${g.name}`}
           onClick={(e) => {
             e.stopPropagation();

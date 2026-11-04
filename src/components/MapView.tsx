@@ -46,7 +46,7 @@ export function MapView() {
         <button
           aria-label="Collapse sidebar"
           title="Collapse sidebar"
-          className="absolute right-2 top-2 hidden rounded p-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:block"
+          className="absolute right-2 top-2 hidden cursor-pointer rounded p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:hover:bg-slate-800 lg:block"
           onClick={() => setSidebarCollapsed(true)}
         >
           <PanelLeftClose size={16} />
@@ -61,7 +61,7 @@ export function MapView() {
             setSidebarCollapsed(false);
           }}
           className={cx(
-            "absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs shadow-sm dark:border-slate-700 dark:bg-slate-900",
+            "absolute left-3 top-3 z-10 flex cursor-pointer items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800",
             sidebarCollapsed ? "lg:flex" : "lg:hidden",
           )}
         >
