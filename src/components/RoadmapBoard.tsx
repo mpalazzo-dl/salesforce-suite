@@ -78,6 +78,21 @@ function Card({ r, showStatus, open, onToggle }: { r: RoadmapItem; showStatus?: 
               </Link>
             ))}
           </div>
+          {!!r.links?.length && (
+            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+              {r.links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] font-medium text-sky-700 underline-offset-2 hover:underline dark:text-sky-400"
+                >
+                  {l.label} ↗
+                </a>
+              ))}
+            </div>
+          )}
         </>
       )}
     </article>
